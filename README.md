@@ -1,41 +1,47 @@
-# PAES Trainer 2027 - V2 Final
+# PAES Trainer 2027 - Comercial + Rachas
 
-Aplicación web instalable (PWA) para M1, M2, Biología y Competencia Lectora.
+Versión comercial final orientada a adolescentes, con acceso anual individual, demo pública y gamificación.
 
 ## Incluye
-- Ensayos base con temporizador, corrección automática y puntaje estimado.
-- Generador híbrido de ensayos nuevos: combina variantes nuevas controladas con preguntas del banco validado.
-- Selector de 35%, 50% o 65% de variantes nuevas.
-- Evita repetir preguntas del banco mientras queden preguntas no utilizadas en el dispositivo.
-- Las preguntas generadas incluyen respuesta correcta, dificultad, eje/habilidad y explicación.
-- En Competencia Lectora, cada pregunta generada incorpora su texto asociado.
-- Modo práctica filtrable por prueba, eje/habilidad y dificultad.
-- Práctica de errores anteriores, incluyendo errores de preguntas generadas.
-- Diagnóstico acumulado con semáforo de dominio.
-- Fortalezas, prioridades y plan de mejora recomendado.
-- Rendimiento por dificultad.
-- Historial y evolución de puntajes.
-- Revisión pregunta por pregunta con explicación.
-- Datos guardados localmente en el navegador.
 
-## Cómo funciona el generador
-La versión incluida funciona sin una API externa. Las variantes nuevas se crean con plantillas académicas controladas y se mezclan con el banco existente para conservar la estructura de cada prueba.
+- Demo gratuita de 9 preguntas sin registro.
+- Compra por WhatsApp al +56 9 9513 2714.
+- Un único acceso completo por 365 días.
+- Login con usuario y contraseña creados por el administrador.
+- Una licencia vinculada al primer dispositivo usado.
+- Panel administrador: crear, renovar, bloquear, liberar dispositivo y cambiar contraseña.
+- Todas las pruebas PAES incluidas en el banco de la app.
+- Ensayos base y generador híbrido de ensayos nuevos.
+- Práctica focalizada, errores, diagnóstico, historial y plan de mejora.
+- Gamificación: racha diaria, XP, niveles, medallas, misión diaria, desafío semanal y protectores de racha.
+- Panel administrador con última actividad, XP y racha sincronizados desde Supabase.
 
-Las claves de servicios de IA nunca deben ponerse en app.js o generator.js. Si más adelante se conecta un modelo externo, debe hacerse mediante un backend o una función serverless segura.
+## Reglas de gamificación
 
-## Publicar en Vercel
-1. Sube todos los archivos de esta carpeta a la raíz de un repositorio GitHub.
-2. En Vercel, importa el repositorio.
-3. Framework Preset: Other (o automático).
-4. No necesitas Build Command.
-5. Deploy.
+La racha NO aumenta por abrir la app. Cuenta como actividad válida:
 
-## Probar localmente
-Desde esta carpeta ejecuta:
+- ensayo completo;
+- práctica de 10 o más preguntas;
+- sesión de errores de 5 o más preguntas.
 
-    python3 -m http.server 8080
+Premios base:
 
-Luego abre http://localhost:8080
+- Ensayo completo: +250 XP.
+- Práctica de 10+ preguntas: +80 XP.
+- Sesión de errores: +75 XP.
+- 80% o más: +100 XP extra.
+- Misión diaria: +100 XP.
+- Desafío semanal: +500 XP.
+- Cada 7 días de racha se obtiene un Protector de Racha, hasta 2 guardados.
 
-## Nota
-Los puntajes y niveles son referenciales. El material no es oficial DEMRE. Las preguntas generadas son material de práctica y deben revisarse periódicamente antes de un uso masivo o comercial.
+La misión diaria usa el eje/habilidad de menor rendimiento acumulado del alumno. El desafío semanal requiere 3 prácticas, 1 ensayo, 1 sesión de errores y actividad en 4 días distintos.
+
+## Seguridad
+
+`config.js` solo lleva la URL de Supabase y la Publishable Key. Nunca pongas una Secret Key o `service_role` dentro de los archivos públicos.
+
+Las operaciones administrativas se realizan mediante la Edge Function `admin-users` incluida en `supabase/functions/admin-users/index.ts`.
+
+## Instalación
+
+Lee `GUIA_INSTALACION.md` y sigue los pasos en orden.

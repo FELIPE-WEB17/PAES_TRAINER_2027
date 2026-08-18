@@ -1,0 +1,18 @@
+PAES Trainer 2027 - validacion de paquete
+
+- JavaScript principal: sintaxis valida (node --check).
+- Landing comercial: render validado en harness local.
+- Dashboard de miembro: racha y mision diaria renderizadas.
+- Gamificacion: practica de 10 preguntas con 90% => 180 XP y racha inicial 1.
+- Pantalla de racha: desafio semanal y medallas renderizados.
+- Generadores validados:
+  * Competencia Lectora: 65 / 60 puntuadas
+  * M1: 65 / 60 puntuadas
+  * M2: 55 / 50 puntuadas
+  * Historia: 65 / 60 puntuadas
+  * Ciencias Biologia: 80 / 75 puntuadas
+  * Ciencias Fisica: 80 / 75 puntuadas
+  * Ciencias Quimica: 80 / 75 puntuadas
+  * Ciencias Tecnico Profesional: 80 / 75 puntuadas
+- WhatsApp configurado: 56995132714.
+- Secretos de Supabase: no incluidos en archivos publicos; deben permanecer en el servidor/Edge Function.

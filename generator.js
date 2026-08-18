@@ -95,17 +95,50 @@ function readingPack(){
  let q3=mcq(`¿Qué evaluación es más adecuada respecto del alcance de la información presentada?`,'Las conclusiones deben limitarse al contexto y evidencia descritos',['El texto permite generalizar sin restricciones','Una experiencia local prueba una ley universal','Los datos dejan de ser útiles si existen excepciones'],'Evaluar','Difícil',`Una evaluación crítica distingue lo que la evidencia respalda de generalizaciones que el texto no justifica.`);
  [q1,q2,q3].forEach(q=>q.context=passage); return {passage,questions:[q1,q2,q3]};
 }
+
+function simpleGenerated(testId){
+  const pools={
+    historia:[
+      ['Historia: Chile siglo XIX','Una fuente del siglo XIX describe debates sobre constituciones y organizacion del poder. ¿Que habilidad es clave para interpretarla?','Contextualizar la fuente y considerar su autoria y proposito',['Aceptar literalmente todo lo escrito','Ignorar la fecha del documento','Suponer que representa a toda la sociedad'],'Media','Las fuentes historicas deben analizarse considerando contexto, autoria, proposito y alcance.'],
+      ['Formacion ciudadana','¿Que principio democratico se expresa cuando distintas instituciones controlan el ejercicio del poder publico?','La existencia de contrapesos y separacion de poderes',['La concentracion absoluta del poder','La eliminacion de tribunales','La ausencia de reglas constitucionales'],'Facil','Los contrapesos reducen concentracion de poder y favorecen control institucional.'],
+      ['Economia y sociedad','Si los precios generales aumentan sostenidamente y el ingreso nominal no cambia, el poder adquisitivo tiende a:','Disminuir',['Aumentar necesariamente','Permanecer siempre identico','Duplicarse automaticamente'],'Media','Con precios mas altos y el mismo ingreso nominal se pueden comprar menos bienes y servicios.'],
+      ['Territorio y ambiente','¿Que medida es mas coherente con una politica preventiva frente a riesgos naturales?','Identificar amenazas, educar a la poblacion y planificar evacuaciones',['Esperar el desastre antes de actuar','Eliminar mapas de riesgo','Concentrar servicios criticos en zonas expuestas'],'Media','La gestion de riesgo preventiva combina conocimiento de amenazas, preparacion e infraestructura.']
+    ],
+    fisica:[
+      ['Fisica electiva - Mecanica','Si la fuerza neta sobre un objeto se duplica y su masa permanece constante, su aceleracion:','Se duplica',['Se reduce a la mitad','No cambia','Se hace cero'],'Facil','Por F=ma, con masa constante la aceleracion es proporcional a la fuerza neta.'],
+      ['Fisica electiva - Ondas','Una onda pasa a un medio donde disminuye su rapidez y mantiene su frecuencia. ¿Que ocurre con su longitud de onda?','Disminuye',['Aumenta','No puede determinarse','Se hace infinita'],'Media','Como v=f lambda, si v disminuye y f permanece constante, lambda disminuye.'],
+      ['Fisica electiva - Electricidad','En un circuito simple, al aumentar la resistencia manteniendo el voltaje constante, la corriente:','Disminuye',['Aumenta','No cambia','Se vuelve negativa necesariamente'],'Media','La ley de Ohm I=V/R muestra que mayor resistencia implica menor corriente para voltaje fijo.'],
+      ['Habilidades cientificas','Un grupo repite una medicion varias veces. ¿Que ventaja principal obtiene?','Puede estimar variabilidad y mejorar la confiabilidad',['Garantiza que toda medicion sea exacta','Elimina la necesidad de unidades','Prueba causalidad por si sola'],'Dificil','Las repeticiones permiten estimar dispersion, detectar valores atipicos y evaluar precision.']
+    ],
+    quimica:[
+      ['Quimica electiva - Estequiometria','Una ecuacion balanceada indica una proporcion 1:2 entre A y B. Si reaccionan 3 mol de A, ¿cuantos mol de B se requieren?','6 mol',['1.5 mol','3 mol','9 mol'],'Facil','La relacion estequiometrica 1:2 implica duplicar los moles de A para obtener los requeridos de B.'],
+      ['Quimica electiva - Soluciones','Se diluye una solucion agregando solvente sin cambiar los moles de soluto. ¿Que ocurre con su concentracion?','Disminuye',['Aumenta','No cambia','Se vuelve cero siempre'],'Media','Al aumentar el volumen manteniendo el soluto, disminuye la concentracion.'],
+      ['Quimica electiva - Organica','¿Que caracteristica distingue a un hidrocarburo?','Esta formado solo por carbono e hidrogeno',['Contiene siempre nitrogeno','Es necesariamente ionico','No posee enlaces covalentes'],'Facil','Los hidrocarburos contienen exclusivamente atomos de carbono e hidrogeno.'],
+      ['Habilidades cientificas','Si un resultado contradice la hipotesis, la accion cientificamente apropiada es:','Revisar la hipotesis a la luz de la evidencia',['Cambiar los datos','Ignorar el resultado','Conservar la hipotesis sin analisis'],'Dificil','Las hipotesis son provisionales y deben contrastarse con la evidencia disponible.']
+    ],
+    ciencias_tp:[
+      ['Ciencias TP - Seguridad','¿Que accion corresponde antes de usar un equipo desconocido en un taller?','Revisar instrucciones, riesgos y elementos de proteccion',['Operarlo inmediatamente','Anular sus protecciones','Trabajar sin registrar condiciones'],'Facil','La prevencion exige identificar riesgos y controles antes de operar equipos.'],
+      ['Ciencias TP - Medicion','¿Por que conviene calibrar un instrumento de medicion?','Para comparar sus lecturas con una referencia y reducir sesgos sistematicos',['Para cambiar la unidad al azar','Para aumentar siempre el valor medido','Para evitar toda repeticion'],'Media','La calibracion verifica la respuesta del instrumento frente a referencias conocidas.'],
+      ['Ciencias TP - Electricidad aplicada','¿Que dispositivo esta disenado para interrumpir un circuito ante una sobrecorriente?','Un fusible o interruptor de proteccion',['Una regla','Un termometro','Un recipiente graduado'],'Media','Los dispositivos de proteccion abren el circuito cuando la corriente supera niveles seguros.'],
+      ['Ciencias TP - Ambiente','La segregacion de residuos en origen permite:','Gestionar cada residuo segun su riesgo y posibilidad de recuperacion',['Mezclar residuos peligrosos y comunes','Eliminar toda trazabilidad','Evitar cualquier tratamiento'],'Dificil','Separar residuos mejora seguridad, trazabilidad, reciclaje y disposicion adecuada.']
+    ]
+  };
+  const row=pick(pools[testId]||pools.historia),[skill,text,correct,wrong,diff,exp]=row;
+  return mcq(text,correct,wrong,skill,diff,exp);
+}
+
 function generatedQuestions(testId,count){
  let out=[],readingTexts=[];
  if(testId==='m1'||testId==='m2') while(out.length<count) out.push(mathQuestion(testId));
  else if(testId==='biologia') while(out.length<count) out.push(bioQuestion());
+ else if(['historia','fisica','quimica','ciencias_tp'].includes(testId)) while(out.length<count) out.push(simpleGenerated(testId));
  else {
    let n=1; while(out.length<count){let p=readingPack();readingTexts.push({n:n++,title:'Texto generado de práctica',body:p.passage}); for(const q of p.questions){if(out.length<count){q.passageIndex=n-1;out.push(q)}}}
  }
  return {questions:out,readingTexts};
 }
-function usedBank(){try{return JSON.parse(localStorage.getItem('paesUsedBankV2')||'{}')}catch{return {}}}
-function saveUsed(x){localStorage.setItem('paesUsedBankV2',JSON.stringify(x))}
+function usedBank(){try{return JSON.parse(localStorage.getItem(`paesUsedBankV2_${window.PAES_PROFILE_SCOPE||'none'}`)||'{}')}catch{return {}}}
+function saveUsed(x){localStorage.setItem(`paesUsedBankV2_${window.PAES_PROFILE_SCOPE||'none'}`,JSON.stringify(x))}
 function bankSample(test,count){let used=usedBank(),ids=new Set(used[test.id]||[]),available=test.questions.filter(q=>!ids.has(String(q.n)));
  if(available.length<count){ids=new Set();available=[...test.questions]}
  let chosen=shuffle(available).slice(0,count); chosen.forEach(q=>ids.add(String(q.n))); used[test.id]=[...ids]; saveUsed(used);

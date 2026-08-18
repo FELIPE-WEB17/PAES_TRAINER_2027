@@ -4,22 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0f172a">
-  <meta name="description" content="PAES Trainer 2027 V2: ensayos, práctica, diagnóstico y progreso.">
-  <title>PAES Trainer 2027 - V2</title>
+  <meta name="description" content="PAES Trainer 2027: demo gratuita y acceso anual personalizado con ensayos, diagnóstico, rachas, XP, misiones y progreso.">
+  <title>PAES Trainer 2027 - Preparación personalizada</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header class="topbar">
-  <button class="brand" onclick="home()" aria-label="Inicio"><span class="brandmark">P</span><span><b>PAES Trainer 2027</b><small>Versión 2 · Diagnóstico + Generador</small></span></button>
-  <nav class="topnav">
+  <button class="brand" onclick="commercialHome()" aria-label="Inicio"><span class="brandmark">P</span><span><b>PAES Trainer 2027</b><small>Preparación personalizada · Acceso anual</small></span></button>
+  <nav class="topnav" id="topnav">
     <button class="ghost" onclick="practiceSetup()">Práctica</button>
+    <button class="ghost" onclick="gamification()">🔥 Racha</button>
     <button class="ghost" onclick="diagnostic()">Diagnóstico</button>
     <button class="ghost" onclick="history()">Historial</button>
+    <button class="ghost" onclick="account()">Mi cuenta</button>
   </nav>
 </header>
 <main id="app"></main>
 <footer>Material de práctica no oficial. Puntajes, niveles y diagnósticos son estimaciones referenciales para estudio.</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
 <script src="data.js"></script>
 <script src="generator.js"></script>
 <script src="app.js"></script>
