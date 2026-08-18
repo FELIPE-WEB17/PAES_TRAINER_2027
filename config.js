@@ -1,7 +1,7 @@
 window.PAES_CONFIG = {
   // Copia estos 2 valores desde Supabase > Project Settings > API.
-  SUPABASE_URL: "PEGA_AQUI_TU_SUPABASE_URL",
-  SUPABASE_PUBLISHABLE_KEY: "PEGA_AQUI_TU_PUBLISHABLE_KEY",
+  SUPABASE_URL: "https://xepmwkpvmfkwyzuhpfoe.supabase.co",
+  SUPABASE_PUBLISHABLE_KEY: "sb_publishable__GnpXje8oGwu9Eb8ZFQWVg_rsZA9yK8",
 
   // WhatsApp del vendedor: +56 9 95132714, sin + ni espacios.
   WHATSAPP_NUMBER: "56995132714",
