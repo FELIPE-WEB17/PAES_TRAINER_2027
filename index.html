@@ -8,19 +8,17 @@
   <title>PAES Trainer - Preparación personalizada</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="v3.css">
 </head>
 <body>
 <header class="topbar">
   <button class="brand" onclick="commercialHome()" aria-label="Inicio"><span class="brandmark">P</span><span><b>PAES Trainer</b><small>1 día de prueba FULL · Acceso anual</small></span></button>
-  <nav class="topnav" id="topnav">
-    <button class="ghost" onclick="learningHub()">🧠 Aprende</button>
-    <button class="ghost" onclick="personalizedClasses()">🎓 Mi clase</button>
-    <button class="ghost" onclick="syllabusHub()">📋 Temarios</button>
-    <button class="ghost" onclick="practiceSetup()">Práctica</button>
-    <button class="ghost" onclick="gamification()">🔥 Racha</button>
-    <button class="ghost" onclick="diagnostic()">Diagnóstico</button>
-    <button class="ghost" onclick="history()">Historial</button>
-    <button class="ghost" onclick="account()">Mi cuenta</button>
+  <nav class="topnav v3nav" id="topnav">
+    <button data-nav="home" onclick="v3Home()">🏠 <span>Inicio</span></button>
+    <button data-nav="training" onclick="v3Training()">🎯 <span>Entrenar</span></button>
+    <button data-nav="exams" onclick="v3Exams()">📝 <span>Ensayos</span></button>
+    <button data-nav="progress" onclick="v3Progress()">📊 <span>Progreso</span></button>
+    <button data-nav="profile" onclick="v3Profile()">👤 <span>Perfil</span></button>
   </nav>
 </header>
 <main id="app"></main>
@@ -33,5 +31,6 @@
 <script src="learning.js"></script>
 <script src="classes.js"></script>
 <script src="pedagogy.js"></script>
+<script src="v3.js"></script>
 </body>
 </html>
