@@ -132,26 +132,51 @@ function startFullTrial(){let status=trialState();if(status==='expired'){trialEx
 function commercialHome(){if(commercialMode==='member')return home();if(commercialMode==='trial'&&trialState()==='active')return home();return landing()}
 function trialExpiredScreen(){clearTimeout(trialTimer);commercialMode='public';currentAccess=null;setNav(false);app.innerHTML=`<section class="loginWrap"><div class="card loginCard"><div class="expiredIcon">⏰</div><div class="eyebrow">PRUEBA FULL FINALIZADA</div><h1>Tu día de prueba terminó</h1><p>Durante 24 horas pudiste usar PAES Trainer con acceso completo. Para seguir estudiando, activa tu acceso por 1 año.</p><div class="licenseBox"><span>Acceso completo</span><b>$15.990</b><small>1 año · Todas las funciones</small></div><a class="waBtn" href="${whatsappUrl()}" target="_blank" rel="noopener">Comprar acceso por $15.990</a><button class="secondary full" onclick="loginScreen()">Ya tengo usuario</button><button class="ghost full" onclick="landing()">Volver</button></div></section>`;window.scrollTo(0,0)}
 function trialAccount(){if(trialState()!=='active'){trialExpiredScreen();return}let p=getActiveProfile()||ensureTrialProfile(),g=getGame(),h=getHistory();app.innerHTML=`<h1>Mi prueba FULL</h1><section class="grid"><article class="card"><div class="eyebrow">1 DÍA DE PRUEBA FULL</div><h2>${esc(p.name)}</h2><div class="licenseBox"><span>Tiempo restante</span><b>${trialRemainingText()}</b><small>Al finalizar, la prueba se bloqueará automáticamente.</small></div><div class="meta"><span class="pill">🔥 ${g.streak} días</span><span class="pill">⭐ ${g.xp} XP</span><span class="pill">${h.length} sesiones</span></div><button class="secondary" onclick="editProfile()">Editar perfil de estudio</button></article><article class="card"><h3>Todo está desbloqueado</h3><p>Durante estas 24 horas puedes usar ensayos, generador, diagnóstico, historial, práctica de errores, rachas, XP y todas las pruebas PAES.</p><a class="waBtn" href="${whatsappUrl()}" target="_blank" rel="noopener">Comprar 1 año · $15.990</a></article></section><div class="toolbar"><button class="btn" onclick="home()">Volver al inicio</button></div>`}
-function landing(){resetState();commercialMode='public';currentAccess=null;setNav(false);let ts=trialState(),trialButton=ts==='none'?`<button class="btn bigBtn" onclick="startFullTrial()">Probar 1 día FULL</button>`:ts==='active'?`<button class="btn bigBtn" onclick="startFullTrial()">Continuar prueba FULL · ${trialRemainingText()}</button>`:`<button class="btn bigBtn" onclick="trialExpiredScreen()">Prueba FULL finalizada</button>`;app.innerHTML=`
-<section class="salesHero">
-  <div class="salesHeroMain">
-    <div class="eyebrow">Preparación PAES personalizada</div>
-    <h1>Practica, mide tu progreso y enfócate en lo que realmente necesitas.</h1>
-    <p>Ensayos, práctica focalizada, diagnóstico acumulado, rachas y recomendaciones de estudio para toda la batería PAES.</p>
-    <div class="heroActions">${trialButton}<button class="secondary bigBtn" onclick="loginScreen()">Ya tengo acceso</button></div>
-    <p class="salesMicro"><b>1 día de prueba FULL:</b> 24 horas con toda la plataforma desbloqueada. No requiere tarjeta.</p>
+function landing(){
+  resetState();commercialMode='public';currentAccess=null;setNav(false);
+  let ts=trialState(),trialButton=ts==='none'
+    ?`<button class="btn bigBtn landingPrimary" onclick="startFullTrial()">🚀 Probar 1 día FULL gratis</button>`
+    :ts==='active'
+      ?`<button class="btn bigBtn landingPrimary" onclick="startFullTrial()">▶️ Continuar prueba · ${trialRemainingText()}</button>`
+      :`<button class="btn bigBtn landingPrimary" onclick="trialExpiredScreen()">🔒 Prueba FULL finalizada</button>`;
+  app.innerHTML=`
+<section class="landingV34">
+  <div class="landingHeroV34">
+    <div class="landingCopyV34">
+      <div class="landingBadgeV34">🎓 PREPARACIÓN PAES PERSONALIZADA</div>
+      <h1>Tu PAES. Tu ritmo.<br><span>Tu progreso. 🚀</span></h1>
+      <p class="landingLeadV34">Practica con foco, descubre qué necesitas reforzar y avanza paso a paso con una ruta pensada para ti.</p>
+      <div class="landingBenefitsV34">
+        <div><span>🎯</span><b>Entrenamiento personalizado</b><small>Estudia justo lo que más necesitas mejorar.</small></div>
+        <div><span>📈</span><b>Mira cómo avanzas</b><small>Diagnóstico, puntajes y progreso en un solo lugar.</small></div>
+        <div><span>🔥</span><b>Mantén tu racha</b><small>XP, desafíos y logros que hacen más entretenido estudiar.</small></div>
+        <div><span>🧠</span><b>Aprende de verdad</b><small>Clases, cápsulas, ensayos y material DEMRE.</small></div>
+      </div>
+      <div class="landingActionsV34">${trialButton}<button class="secondary bigBtn landingSecondary" onclick="loginScreen()">🔑 Ya tengo cuenta</button></div>
+      <p class="landingTrialV34"><b>24 horas FULL</b> · Sin tarjeta · Activas la prueba cuando tú quieras.</p>
+    </div>
+    <aside class="landingOfferV34">
+      <div class="landingOfferTopV34"><span>✨ ACCESO COMPLETO</span><b>1 año</b></div>
+      <div class="landingPriceV34"><strong>$15.990</strong><small>pago único</small></div>
+      <p>Todo PAES Trainer desbloqueado durante 365 días.</p>
+      <div class="landingFeatureV34"><span>✓</span> Todas las pruebas PAES</div>
+      <div class="landingFeatureV34"><span>✓</span> Entrenamiento adaptativo</div>
+      <div class="landingFeatureV34"><span>✓</span> Ensayos y prácticas ilimitadas</div>
+      <div class="landingFeatureV34"><span>✓</span> Clases, cápsulas y diagnóstico</div>
+      <div class="landingFeatureV34"><span>✓</span> Progreso, rachas y recompensas</div>
+      <div class="landingFeatureV34"><span>✓</span> Biblioteca de material DEMRE</div>
+      <a class="waBtn landingWhatsAppV34" href="${whatsappUrl()}" target="_blank" rel="noopener">💬 Comprar por WhatsApp</a>
+      <small class="landingSafeV34">Tú realizas la transferencia directamente con el administrador.</small>
+    </aside>
   </div>
-  <aside class="salesOffer card">
-    <span class="offerBadge">ACCESO ANUAL</span><h2>${esc(CFG.ACCESS_LABEL||'Acceso completo por 1 año')}</h2>
-    <p class="priceLabel">Acceso completo por 1 año · $15.990</p>
-    <ul class="featureList"><li>Todas las pruebas PAES</li><li>Ensayos y prácticas ilimitadas</li><li>Generador de nuevos ensayos</li><li>Diagnóstico y semáforo de dominio</li><li>Historial y plan de mejora</li><li>🔥 Rachas, XP, misiones y medallas</li><li>Actualizaciones durante tu acceso</li></ul>
-    <a class="waBtn" href="${whatsappUrl()}" target="_blank" rel="noopener">Comprar por WhatsApp</a>
-  </aside>
-</section>
-<section class="sectionTitle"><div><h2>Prueba todo antes de comprar</h2><p>Activa una sola vez tu día de prueba FULL y explora PAES Trainer durante 24 horas.</p></div></section>
-<section class="grid three"><article class="card"><div class="salesIcon">01</div><h3>24 horas FULL</h3><p>Acceso completo a todas las pruebas, ensayos, prácticas y generador.</p></article><article class="card"><div class="salesIcon">02</div><h3>Diagnóstico real</h3><p>Usa el diagnóstico, historial, errores, rachas, XP, misiones y medallas.</p></article><article class="card"><div class="salesIcon">03</div><h3>Decide después</h3><p>Cuando termine el día, la prueba se bloquea y puedes comprar 1 año por $15.990.</p></article></section>
-<section class="demoStrip card"><div><div class="eyebrow">1 DÍA DE PRUEBA FULL</div><h2>Úsala como si ya fueras cliente</h2><p>Todas las funciones quedan desbloqueadas durante 24 horas desde que activas la prueba.</p></div>${trialButton}</section>
-<section class="securityStrip"><b>¿Ya compraste tu acceso?</b><span>Entra con el usuario y contraseña que te entregó el administrador.</span><button class="ghost" onclick="loginScreen()">Iniciar sesión</button></section>`;window.scrollTo(0,0)}
+  <div class="landingSocialV34">
+    <div><span>🆓</span><b>Prueba primero</b><small>Conoce toda la plataforma antes de comprar.</small></div>
+    <div><span>📚</span><b>Enfoque PAES</b><small>Contenido organizado con referencia en temarios DEMRE.</small></div>
+    <div><span>⚡</span><b>Sin perder tiempo</b><small>La app prioriza tus debilidades y tu progreso.</small></div>
+  </div>
+</section>`;
+  window.scrollTo(0,0)
+}
 function loginScreen(message=''){commercialMode='public';setNav(false);app.innerHTML=`<section class="loginWrap"><div class="card loginCard"><div class="eyebrow">ACCESO CLIENTES</div><h1>Iniciar sesión</h1><p>Usa el usuario y contraseña que te entregó el administrador.</p>${message?`<div class="loginMessage">${esc(message)}</div>`:''}<div class="field"><label>Usuario</label><input id="loginUser" autocomplete="username" placeholder="Ej.: catalina2027"></div><div class="field"><label>Contraseña</label><input id="loginPass" type="password" autocomplete="current-password" placeholder="Tu contraseña" onkeydown="if(event.key==='Enter')login()"></div><button class="btn full" onclick="login()">Entrar</button><div class="loginLinks"><button class="ghost" onclick="landing()">Volver</button><a href="${whatsappUrl()}" target="_blank" rel="noopener">Comprar acceso</a></div>${!isConfigured()?'<div class="setupWarning"><b>Modo de configuración:</b> aún falta conectar Supabase en <code>config.js</code>. La demo funciona igualmente.</div>':''}</div></section>`}
 async function initSupabase(){if(!isConfigured()||!window.supabase)return null;if(!sb)sb=window.supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});return sb}
 function deviceId(){let k='paesDeviceIdV1',v=localStorage.getItem(k);if(!v){v='d_'+(crypto.randomUUID?crypto.randomUUID():uid());localStorage.setItem(k,v)}return v}

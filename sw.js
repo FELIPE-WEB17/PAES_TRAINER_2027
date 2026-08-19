@@ -1,4 +1,4 @@
-const CACHE='paes-v3-3-electric-demre-library';
+const CACHE='paes-v3-4-landing-juvenil';
 const ASSETS=['./','./index.html','./styles.css','./v3.css','./config.js','./data.js','./generator.js','./diversity.js','./app.js','./learning.js','./classes.js','./pedagogy.js','./demre-library.js','./v3.js','./manifest.webmanifest'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([self.clients.claim(),caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))])));

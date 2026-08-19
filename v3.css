@@ -78,3 +78,33 @@ input,select,textarea{background:#052B82!important;color:#fff!important;border-c
 .officialScorePanel{background:#042C84;border:1px solid var(--blueLine);border-radius:28px;padding:22px;margin-bottom:18px;box-shadow:0 18px 50px rgba(0,10,60,.3)}.scorePanelHead{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:18px}.scorePanelHead>div{display:flex;align-items:center;gap:10px}.scorePanelHead h2{margin:0}.officialScoreGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.officialScoreTile{display:flex;flex-direction:column;align-items:center;text-align:center;padding:18px;border-radius:18px;background:#0A57D7;border:1px solid rgba(255,255,255,.18)}.scoreIcon{font-size:28px}.scoreValue{font-size:42px;font-weight:950;line-height:1.05;margin:8px 0}.scoreName{font-size:12px;font-weight:900;min-height:34px;text-transform:uppercase}.officialScoreTile input{margin-top:10px;max-width:130px;text-align:center;border-radius:10px;padding:9px}
 @media(max-width:900px){.v3nav{background:#042B85!important;border-color:rgba(255,255,255,.18)!important}.demreYearGrid{grid-template-columns:1fr}.officialScoreGrid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.officialScoreGrid{grid-template-columns:1fr 1fr}.demreYearCard{grid-template-columns:70px 1fr}.demreYear{font-size:23px;padding:18px 5px}.scoreValue{font-size:36px}}
+
+/* ===== V3.4 PORTADA JUVENIL - azul electrico con contraste real ===== */
+.landingV34{max-width:1380px;margin:0 auto;padding:26px 18px 42px;color:#fff}
+.landingHeroV34{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,.72fr);gap:20px;align-items:stretch}
+.landingCopyV34,.landingOfferV34{border:1px solid rgba(255,255,255,.18);box-shadow:0 22px 60px rgba(0,10,55,.28)}
+.landingCopyV34{position:relative;overflow:hidden;border-radius:30px;padding:clamp(26px,4.5vw,58px);background:linear-gradient(145deg,#0636a8 0%,#075cff 56%,#008fee 100%)}
+.landingCopyV34:before{content:"";position:absolute;width:380px;height:380px;border-radius:50%;right:-150px;top:-170px;background:rgba(70,224,255,.18)}
+.landingCopyV34:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;left:-130px;bottom:-150px;background:rgba(102,72,255,.18)}
+.landingCopyV34>*{position:relative;z-index:1}
+.landingBadgeV34{display:inline-flex;padding:8px 12px;border-radius:999px;background:rgba(1,26,91,.38);border:1px solid rgba(255,255,255,.17);font-size:12px;font-weight:950;letter-spacing:.07em}
+.landingCopyV34 h1{font-size:clamp(44px,5.7vw,78px);line-height:.98;letter-spacing:-.045em;margin:20px 0 16px;color:#fff!important;max-width:900px}
+.landingCopyV34 h1 span{color:#7ee9ff!important}
+.landingLeadV34{font-size:clamp(17px,2vw,21px);line-height:1.5;color:#e8f2ff!important;max-width:760px;margin:0 0 26px}
+.landingBenefitsV34{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:0 0 26px}
+.landingBenefitsV34>div{display:grid;grid-template-columns:42px 1fr;column-gap:10px;align-items:center;padding:13px 14px;border-radius:17px;background:rgba(2,34,111,.34);border:1px solid rgba(255,255,255,.13)}
+.landingBenefitsV34>div>span{grid-row:1/3;font-size:27px}.landingBenefitsV34 b{font-size:14px;color:#fff!important}.landingBenefitsV34 small{font-size:12px;line-height:1.35;color:#cfe3ff!important}
+.landingActionsV34{display:flex;flex-wrap:wrap;gap:12px}.landingActionsV34 .bigBtn{min-height:56px;padding:15px 22px;border-radius:16px;font-size:16px}
+.landingPrimary{background:linear-gradient(135deg,#37e1ff,#20b7ff)!important;color:#05245f!important;box-shadow:0 12px 30px rgba(0,22,90,.23)!important}
+.landingSecondary{background:#06358f!important;color:#fff!important;border:1px solid rgba(255,255,255,.2)!important}
+.landingTrialV34{font-size:13px!important;color:#cfe4ff!important;margin:13px 0 0!important}
+.landingOfferV34{border-radius:30px;padding:30px;background:linear-gradient(160deg,#06266f 0%,#083ca7 55%,#0759de 100%);display:flex;flex-direction:column;justify-content:center;min-width:0}
+.landingOfferTopV34{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:15px}.landingOfferTopV34 span{font-size:12px;font-weight:950;letter-spacing:.07em;color:#76e8ff}.landingOfferTopV34 b{padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.11);font-size:13px}
+.landingPriceV34{display:flex;align-items:flex-end;gap:10px;margin-bottom:10px}.landingPriceV34 strong{font-size:clamp(43px,4vw,62px);line-height:1;color:#fff}.landingPriceV34 small{padding-bottom:7px;color:#cbdcff!important}
+.landingOfferV34>p{color:#dce9ff!important;font-size:15px;margin:0 0 17px}
+.landingFeatureV34{display:flex;align-items:center;gap:10px;padding:9px 0;color:#fff;font-size:14px;border-bottom:1px solid rgba(255,255,255,.08)}.landingFeatureV34 span{display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:#23d7ff;color:#042863;font-weight:950}
+.landingWhatsAppV34{margin-top:22px!important;min-height:54px;border-radius:15px!important;background:linear-gradient(135deg,#42e3ff,#1ac1ff)!important;color:#03255f!important;font-size:16px}
+.landingSafeV34{display:block;text-align:center;margin-top:10px;color:#bcd7ff!important;font-size:11px!important}
+.landingSocialV34{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.landingSocialV34>div{display:grid;grid-template-columns:42px 1fr;gap:4px 10px;align-items:center;padding:16px;border-radius:18px;background:rgba(3,42,127,.82);border:1px solid rgba(255,255,255,.14)}.landingSocialV34 span{grid-row:1/3;font-size:25px}.landingSocialV34 b{color:#fff!important}.landingSocialV34 small{color:#c9dcff!important}
+@media(max-width:980px){.landingHeroV34{grid-template-columns:1fr}.landingOfferV34{padding:25px}.landingCopyV34 h1{font-size:clamp(42px,8vw,66px)}}
+@media(max-width:620px){.landingV34{padding:14px 12px 108px}.landingCopyV34,.landingOfferV34{border-radius:24px;padding:22px}.landingCopyV34 h1{font-size:42px;line-height:1}.landingLeadV34{font-size:16px}.landingBenefitsV34,.landingSocialV34{grid-template-columns:1fr}.landingActionsV34{display:grid;grid-template-columns:1fr}.landingActionsV34 .bigBtn{width:100%}.landingPriceV34 strong{font-size:50px}.landingOfferV34{margin-top:0}}
