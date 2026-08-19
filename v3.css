@@ -11,3 +11,31 @@ body{background:radial-gradient(circle at 8% -5%,#e8e6ff 0,transparent 30%),radi
 .v3pageHead{margin:16px 0 22px}.v3pageHead h1{font-size:38px;letter-spacing:-.03em}.v3focus{display:flex;justify-content:space-between;align-items:center;gap:20px;background:linear-gradient(135deg,#fff,#f7f6ff)}.v3focus>div{display:flex;gap:14px;align-items:center}.v3focusIcon{font-size:38px}.v3focus h2{margin:4px 0}.v3metric{font-size:36px;color:#5146d8}.v3examGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.v3examCard{display:flex;flex-direction:column;justify-content:space-between;min-height:210px}.v3demreNote{margin:20px 2px 0}.pill.v3tag{font-weight:900}.pill.v3tag.new{background:#ecfdf3;color:#027a48;border-color:#abefc6}.pill.v3tag.reinforce{background:#fff4ed;color:#b93815;border-color:#ffd6ae}.pill.v3tag.review{background:#f4f3ff;color:#5925dc;border-color:#d9d6fe}
 @media(max-width:850px){.v3hero{grid-template-columns:1fr;padding:24px}.v3score{padding:20px}.v3steps{grid-template-columns:1fr 1fr}.v3quick{grid-template-columns:1fr 1fr}.v3examGrid{grid-template-columns:1fr}.v3dailyHead,.v3pageHead,.v3focus{flex-direction:column}.v3focus{align-items:stretch}}
 @media(max-width:680px){body{padding-bottom:78px}.topbar{position:sticky;top:0;z-index:50;flex-direction:row;align-items:center}.brand small{display:none}.v3nav{position:fixed;left:8px;right:8px;bottom:8px;z-index:70;display:grid!important;grid-template-columns:repeat(5,1fr);padding:7px;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);border:1px solid #e4e7ec;border-radius:20px;box-shadow:0 18px 50px rgba(16,24,40,.18)}.v3nav button{font-size:0;padding:7px 3px}.v3nav button::first-letter{font-size:20px}.v3nav button span{display:block;font-size:10px}.v3hero h1{font-size:38px}.v3steps,.v3stats,.v3quick{grid-template-columns:1fr}.v3steps button{min-height:72px}.v3score b{font-size:48px}}
+
+/* ===== V3.1 visual refresh: mas calida, elegante y amigable ===== */
+:root{--v3navy:#13213b;--v3violet:#6558f5;--v3sky:#4ea5ff;--v3aqua:#38c9bd;--v3peach:#ffcfb7;--v3cream:#fffdf8}
+body{min-height:100vh;background:
+ radial-gradient(circle at 7% 6%,rgba(111,99,255,.16),transparent 24rem),
+ radial-gradient(circle at 94% 12%,rgba(78,165,255,.18),transparent 26rem),
+ radial-gradient(circle at 84% 82%,rgba(56,201,189,.11),transparent 24rem),
+ linear-gradient(180deg,#fbfcff 0%,#f7f9ff 42%,#fffdf9 100%);background-attachment:fixed}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.32;background-image:radial-gradient(rgba(101,88,245,.14) 1px,transparent 1px);background-size:26px 26px;mask-image:linear-gradient(to bottom,black,transparent 68%);z-index:-1}
+.topbar{background:rgba(255,255,255,.91)!important;border-bottom:1px solid rgba(50,65,90,.08);box-shadow:0 8px 30px rgba(32,45,75,.05)}
+.topbar .brand{color:var(--v3navy)!important}.topbar .brand b{color:var(--v3navy)!important}.topbar .brand small{color:#7b879d!important}.brandmark{color:white!important;background:linear-gradient(145deg,#7165ff,#3c82ff)!important;box-shadow:0 9px 24px rgba(83,91,235,.24)}
+main{position:relative}
+.card,.question,.resultbox,.panel,.heroSide{border-color:rgba(91,105,135,.13);box-shadow:0 14px 40px rgba(39,55,88,.07)}
+.salesHero{gap:22px;align-items:stretch}
+.salesHeroMain{position:relative;overflow:hidden;background:linear-gradient(135deg,#eef1ff 0%,#e7f6ff 52%,#edfff9 100%)!important;color:var(--v3navy)!important;border:1px solid rgba(102,91,246,.14);box-shadow:0 24px 70px rgba(59,72,116,.12)}
+.salesHeroMain:before{content:"";position:absolute;width:280px;height:280px;border-radius:50%;right:-70px;top:-95px;background:linear-gradient(135deg,rgba(101,88,245,.22),rgba(78,165,255,.08))}
+.salesHeroMain:after{content:"🎯  ✨  📚";position:absolute;right:42px;bottom:30px;font-size:32px;letter-spacing:12px;opacity:.34;transform:rotate(-4deg)}
+.salesHeroMain>*{position:relative;z-index:1}.salesHeroMain h1{max-width:850px;color:#17233d!important;font-size:clamp(38px,5.1vw,62px);line-height:1.02}.salesHeroMain p{color:#4d5f7b!important;max-width:760px}.salesHeroMain .eyebrow{color:#5549df!important}.salesMicro{color:#697a93!important}
+.salesOffer{background:rgba(255,255,255,.92);border:1px solid rgba(95,109,137,.13);box-shadow:0 20px 60px rgba(39,55,88,.09)}.offerBadge{background:#e7fbf4;color:#08775d}.priceLabel{color:#5146d8}.featureList{color:#44536b}
+.btn,.waBtn{box-shadow:0 8px 20px rgba(45,92,205,.12)}
+.v3hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#fff 0%,#f3f1ff 42%,#eaf8ff 100%);color:var(--v3navy);border:1px solid rgba(100,90,235,.14);box-shadow:0 22px 65px rgba(53,67,108,.12)}
+.v3hero:after{content:"";position:absolute;width:340px;height:340px;right:-140px;bottom:-180px;border-radius:50%;background:linear-gradient(135deg,rgba(101,88,245,.23),rgba(56,201,189,.12))}.v3hero>div{position:relative;z-index:1}.v3hero h1{color:#17233d}.v3hero p{color:#53647e}.v3hero .eyebrow{color:#5b50df}.v3chips span{background:#fff;border:1px solid #e2e5f0;color:#40516d;box-shadow:0 5px 15px rgba(40,55,90,.04)}
+.v3score{background:linear-gradient(145deg,#172a52,#3548a9 58%,#4a78e8);border:0;box-shadow:0 15px 38px rgba(38,62,132,.18)}.v3score small,.v3score span{color:#dce7ff}.v3score b{color:#fff}
+.v3daily{background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border:1px solid rgba(92,105,135,.12)}.v3steps button,.v3quick button,.v3stats article{background:rgba(255,255,255,.94)}
+.v3steps button:nth-child(1) i{background:#eeeaff;color:#5d50df}.v3steps button:nth-child(2) i{background:#e8f5ff;color:#176fc3}.v3steps button:nth-child(3) i{background:#fff0e8;color:#b8501a}.v3steps button:nth-child(4) i{background:#e8fbf4;color:#08775d}
+.v3primary{background:linear-gradient(135deg,#6658f5,#4288ff);box-shadow:0 10px 24px rgba(75,91,224,.22)}
+.v3pageHead h1{color:#17233d}.v3focus{background:linear-gradient(135deg,#ffffff,#f3f6ff)}
+@media(max-width:700px){.salesHeroMain:after{font-size:24px;right:16px;bottom:14px}.salesHeroMain h1{font-size:40px}.topbar{padding-top:max(10px,env(safe-area-inset-top))}.v3hero{padding:22px}.v3hero h1{font-size:36px}}

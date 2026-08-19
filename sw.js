@@ -1,4 +1,4 @@
-const CACHE='paes-trainer-v3-final-1';
+const CACHE='paes-v3-1-friendly-multidevice';
 const ASSETS=['./','./index.html','./styles.css','./v3.css','./config.js','./data.js','./generator.js','./app.js','./learning.js','./classes.js','./pedagogy.js','./v3.js','./manifest.webmanifest'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([self.clients.claim(),caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))])));
