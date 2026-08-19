@@ -116,3 +116,98 @@ function showPedHint(i,level){const el=document.getElementById(`pedhint-${i}`);i
 function classQuestionHTML(q,i){return `<section class="question"><div class="meta"><span class="pill">Pregunta ${i+1}/10</span><span class="pill">${esc(q.difficulty||'Media')}</span><span class="pill">${esc(q.skill||'General')}</span></div>${q._context?`<details class="passage" ${i<2?'open':''}><summary><b>Texto para responder</b></summary><p>${esc(q._context)}</p></details>`:''}<h3>${esc(q.text)}</h3>${q.options.map(o=>`<label class="option"><input type="radio" name="pcq${i}" value="${o.key}" onchange="preuAnswer(${i},'${o.key}')"><b>${o.key})</b> ${esc(o.text)}</label>`).join('')}<div class="toolbar" style="margin-top:.7rem"><button class="ghost" onclick="showPedHint(${i},1)">💡 Dame una pista</button><button class="ghost" onclick="showPedHint(${i},2)">🍎 Explícamelo fácil</button></div><div id="pedhint-${i}" class="recommend" style="display:block;margin-top:.5rem">Usa una pista solo si la necesitas. Intenta pensar primero por tu cuenta.</div></section>`}
 
 function openPersonalizedClass(encoded){if(!learningGate())return;const skill=decodeURIComponent(encoded),stat=personalSkillStats().find(v=>v.skill===skill),th=classTheory(skill),qs=chooseClassQuestions(skill,10),p=pedagogicPack(skill),v=classVideo(skill);preuSession={skill,questions:qs,answers:{},started:Date.now()};const g=preuGrade();app.innerHTML=`<div class="toolbar"><button class="ghost" onclick="personalizedClasses()">← Mis clases</button><span class="pill">${g}° Medio</span><span class="pill">${stat?stat.p+'% actual':'Refuerzo'}</span></div><section class="card" style="border-left:5px solid #7c3aed"><div class="eyebrow">CLASE PERSONALIZADA PAES · ${g}° MEDIO</div><h1>${esc(th.title)}</h1><p><b>Tu foco:</b> ${esc(skill)}. ${g===3?'Vamos desde la base y subimos de a poco.':'Vamos directo a comprensión, estrategia y aplicación PAES.'}</p></section><section class="grid three"><article class="card"><h2>⚡ Resumen rápido</h2><p>${esc(p.quick)}</p></article><article class="card" style="border-left:5px solid #f59e0b"><h2>🍎 Explícamelo fácil</h2><p>${esc(p.easy)}</p></article><article class="card" style="border-left:5px solid #7c3aed"><h2>🎓 Aprenderlo bien</h2><ol>${p.deep.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></article></section><section class="card"><h2>▶️ ¿Prefieres verlo?</h2><p>Complementa la clase con una pregunta comentada o material del canal oficial DEMRE.</p><button class="secondary" onclick="openTeacherVideo('${encodeURIComponent(skill)}')">▶️ ${esc(v.title)}</button><p class="tiny">El video se abre en YouTube. Es material externo y complementario; PAES Trainer no copia preguntas oficiales.</p></section><section class="card"><h2>👨‍🏫 Ahora el profesor te muestra el método</h2><p>No memorices una letra. Usa siempre este camino:</p><ol>${th.method.slice(0,5).map(x=>`<li>${esc(x)}</li>`).join('')}</ol><div class="recommend"><strong>Idea clave</strong>${esc(th.tips[0]||p.quick)}</div></section><section class="grid"><article class="card"><h2>✏️ Ejemplo guiado</h2><p><b>1.</b> Lee y di qué te piden con tus palabras.</p><p><b>2.</b> Marca solo la información útil.</p><p><b>3.</b> Elige una estrategia antes de operar.</p><p><b>4.</b> Resuelve y explica por qué tu respuesta tiene sentido.</p></article><article class="card"><h2>🚨 Trampas típicas</h2><ul>${th.tips.slice(0,4).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></article></section><div class="sectionTitle"><div><h2>🎯 Desafío PAES · 10 preguntas</h2><p>Preguntas originales de PAES Trainer, organizadas por eje, habilidad y dificultad con referencia a la estructura PAES/DEMRE.</p></div></div>${qs.length?qs.map((q,i)=>classQuestionHTML(q,i)).join(''):'<section class="card"><p>Aún no hay suficientes preguntas asociadas a este eje.</p></section>'}<div class="toolbar"><button class="btn" onclick="finishPreuClass()">Corregir mi clase</button><button class="secondary" onclick="personalizedClasses()">Salir</button></div>`;window.scrollTo(0,0)}
+
+// === Correccion V3: ayudas realmente especificas por enunciado ===
+// Regla: la pista orienta el primer paso. "Explicamelo facil" ensena el procedimiento
+// usando los datos de ESA pregunta. No reutiliza la misma plantilla como respuesta final.
+function _numList(text){return (String(text||'').match(/-?\d+(?:[.,]\d+)?/g)||[]).map(x=>x.replace(',','.'));}
+function _correctText(q){const o=(q.options||[]).find(x=>x.key===q.answer);return String(o?.text||'').trim();}
+function _safeExplanation(q){let e=String(q.explanation||'').trim();const ans=_correctText(q);if(ans){const escAns=ans.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');e=e.replace(new RegExp('(?:=|:|es|son|da|resulta|raíces son|raices son)\\s*'+escAns.replace(/\s+/g,'\\s*')+'(?:\\s*\\w*)?\\.?','ig'),' y desde ahí comparas con las alternativas.');}return e;}
+function _assistSpecific(q){
+ const t=cleanQuestionText(q), l=t.toLowerCase(), nums=_numList(t), exp=String(q.explanation||'');
+ // Compra de varios articulos con precio unitario.
+ let m=t.match(/se compran\s+(\d+)\s+cuadernos\s+y\s+(\d+)\s+l[aá]pices.*?cada art[ií]culo.*?\$?(\d+(?:[.,]\d+)?)\s*mil/i);
+ if(m){const a=m[1],b=m[2],p=m[3];return {
+  hint:`Tienes dos cantidades de artículos: ${a} cuadernos y ${b} lápices. Primero júntalas para saber cuántos artículos se compraron en total. Recién después usa el precio de $${p} mil por cada artículo.`,
+  easy:`Piensa en una compra real: hay ${a} cuadernos + ${b} lápices. Paso 1: cuenta cuántas cosas hay en total (${a}+${b}). Paso 2: como CADA cosa cuesta $${p} mil, multiplica ese total por ${p}. No necesitas despejar x ni usar una fórmula de álgebra.`
+ }};
+ // Ecuacion cuadratica ax^2+bx+c=0.
+ m=t.match(/soluciones de\s*([+-]?\d+(?:[.,]\d+)?)x\^2\s*\+\s*\(([+-]?\d+(?:[.,]\d+)?)\)x\s*\+\s*\(([+-]?\d+(?:[.,]\d+)?)\)\s*=\s*0/i);
+ if(m){const a=m[1],b=m[2],c=m[3];return {
+  hint:`Ojo: esta NO es una ecuación lineal porque aparece x². Identifica a=${a}, b=${b} y c=${c}. Tu primer paso es calcular el discriminante Δ=b²−4ac.`,
+  easy:`Aquí no sirve “dejar x sola” como en 3x+7=19. Es una cuadrática. Usa x = (−b ± √Δ)/(2a). En ESTA pregunta: a=${a}, b=${b}, c=${c}. Primero calcula Δ=(${b})²−4·(${a})·(${c}); luego usa el + y el − para obtener las dos soluciones.`
+ }};
+ // Ecuacion lineal y segunda expresion.
+ m=t.match(/si\s*([+-]?\d+)x\s*([+-]\s*\d+)\s*=\s*([+-]?\d+).*?entonces\s*([+-]?\d+)x\s*([+-]\s*\d+)/i);
+ if(m){const a=m[1],b=m[2].replace(/\s/g,''),r=m[3],c=m[4],d=m[5].replace(/\s/g,'');return {
+  hint:`Primero trabaja solo con ${a}x ${b} = ${r}. Deshaz ${b.startsWith('+')?'la suma':'la resta'} y luego divide por ${a} para encontrar x. Todavía no calcules ${c}x ${d}.`,
+  easy:`Son dos mini problemas. 1) Encuentra x en ${a}x ${b} = ${r}: mueve el término ${b} al otro lado haciendo la operación contraria y después divide por ${a}. 2) Cuando tengas x, reemplázala en ${c}x ${d}. Así no mezclas las dos cuentas.`
+ }};
+ // Evaluacion de funcion lineal.
+ m=t.match(/funci[oó]n\s+f\(x\)\s*=\s*([+-]?\d+)x\s*([+-]\s*\d+).*?f\(([+-]?\d+)\)/i);
+ if(m){const a=m[1],b=m[2].replace(/\s/g,''),x=m[3];return {
+  hint:`f(${x}) significa que debes reemplazar cada x de f(x)=${a}x${b} por ${x}. Haz primero esa sustitución, sin calcular mentalmente todo de una vez.`,
+  easy:`Imagina que f es una máquina. Entra ${x}. La máquina hace: 1) ${a}×${x}; 2) después aplica ${b}. Escribe esas dos operaciones en ese orden y obtendrás la salida f(${x}).`
+ }};
+ // Evaluacion de funcion cuadratica trasladada.
+ m=t.match(/g\(x\)\s*=\s*\(x\s*\+\s*1\)\^2\s*-\s*1.*?g\((\d+)\)/i);
+ if(m){const x=m[1];return {
+  hint:`Reemplaza x por ${x} dentro del paréntesis. La potencia ² se aplica a TODO (${x}+1), y el −1 va al final.`,
+  easy:`Hazlo como tres escalones: entra ${x} → súmale 1 → eleva ese resultado al cuadrado → resta 1. No eleves solo el 1 ni restes antes de hacer el cuadrado.`
+ }};
+ // Crecimiento exponencial P(t)=A(1+r)^t.
+ m=t.match(/P\(t\)\s*=\s*(\d+(?:[.,]\d+)?)\(1\+([\d.,]+)\)\^t.*?P\((\d+)\)/i);
+ if(m){const A=m[1],r=m[2],tt=m[3];return {
+  hint:`En P(t)=${A}(1+${r})^t, reemplaza t por ${tt}. Primero resuelve el paréntesis, luego la potencia y al final multiplica por ${A}.`,
+  easy:`Piensa en crecimiento por etapas. Partes con ${A}. En cada etapa multiplicas por 1+${r}. Como t=${tt}, ese mismo factor se aplica ${tt} veces. Por eso la potencia va antes de multiplicar por el valor inicial.`
+ }};
+ // Porcentaje directo.
+ m=t.match(/(?:cu[aá]l es el\s*)?(\d+(?:[.,]\d+)?)%\s+de\s+(\d+(?:[.,]\d+)?)/i);
+ if(m){const p=m[1],total=m[2];return {
+  hint:`El ${p}% es una parte de ${total}. Convierte ${p}% en ${p}/100 y úsalo como factor sobre ${total}.`,
+  easy:`Si ${total} fuera una torta completa (100%), quieres solo ${p} de cada 100 partes. La cuenta es ${total}×${p}/100. Puedes hacer primero ${total}÷100 y luego multiplicar por ${p}.`
+ }};
+ // Proporcion directa de objetos y costo.
+ m=t.match(/si\s*(\d+)\s+objetos\s+cuestan\s*\$?(\d+(?:[.,]\d+)?)\s*mil.*?cu[aá]nto\s+cuestan\s*(\d+)\s+objetos/i);
+ if(m){const a=m[1],cost=m[2],b=m[3];return {
+  hint:`Primero averigua cuánto cuesta 1 objeto: divide ${cost} entre ${a}. Después usa ese precio unitario para ${b} objetos.`,
+  easy:`Haz una mini tabla: ${a} objetos → $${cost} mil. Para llegar a 1 objeto, divide el costo por ${a}. Luego multiplica ese valor por ${b}. La misma proporción debe mantenerse.`
+ }};
+ // MCD.
+ m=t.match(/m[aá]ximo com[uú]n divisor entre\s*(\d+)\s+y\s+(\d+)/i);
+ if(m){const a=m[1],b=m[2];return {
+  hint:`Busca números que dividan exactamente tanto a ${a} como a ${b}. Te interesa el mayor que comparten.`,
+  easy:`Imagina que tienes ${a} y ${b} objetos y quieres hacer grupos del MISMO tamaño sin que sobre ninguno. Prueba divisores comunes; el tamaño de grupo más grande posible es el MCD.`
+ }};
+ // Area circulo.
+ m=t.match(/radio\s+(\d+(?:[.,]\d+)?)\s*cm.*?[aá]rea/i);
+ if(m){const r=m[1];return {
+  hint:`Te piden área, no el borde. Usa A=πr² con r=${r}. Primero calcula ${r}².`,
+  easy:`Imagina que quieres pintar todo el interior del círculo. La superficie se calcula con π×radio×radio. Aquí es 3,14×${r}×${r}. El ² significa multiplicar el radio por sí mismo.`
+ }};
+ // Pitagoras.
+ m=t.match(/catetos de\s*(\d+(?:[.,]\d+)?)\s*cm\s+y\s*(\d+(?:[.,]\d+)?)\s*cm.*?hipotenusa/i);
+ if(m){const a=m[1],b=m[2];return {
+  hint:`Como te dan los dos catetos (${a} y ${b}), usa Pitágoras: c²=${a}²+${b}². La raíz cuadrada va al final.`,
+  easy:`Hazlo en tres pasos: 1) multiplica ${a}×${a}; 2) multiplica ${b}×${b}; 3) suma esos resultados. El número que al multiplicarse por sí mismo da esa suma es la hipotenusa.`
+ }};
+ // Probabilidad bolsa.
+ m=t.match(/bolsa hay\s*(\d+)\s*fichas\s+y\s*(\d+)\s*son\s+rojas/i);
+ if(m){const total=m[1],fav=m[2];return {
+  hint:`Casos posibles=${total}. Casos favorables=${fav}. Arma primero la fracción favorables/posibles.`,
+  easy:`Imagina que cierras los ojos y sacas una ficha. Hay ${total} fichas que podrían salir, pero solo ${fav} te sirven porque son rojas. Entonces partes con ${fav}/${total} y después simplificas esa fracción.`
+ }};
+ // Promedio explicito con lista.
+ if(/promedio de los datos\s*\[/.test(l)){const vals=(t.match(/\[([^\]]+)\]/)||[])[1];if(vals){const arr=vals.split(',').map(x=>x.trim()).filter(Boolean);return {
+  hint:`Hay ${arr.length} datos. Súmalos todos y divide esa suma por ${arr.length}.`,
+  easy:`Piensa en repartir todos estos valores en partes iguales: ${arr.join(', ')}. Primero júntalos en una sola suma; luego reparte el total entre ${arr.length}, porque esa es la cantidad de datos.`
+ }};}
+ // Lectura: aprovechar texto y habilidad concreta.
+ if(q._context){const skill=normText(q.skill);const snippet=String(q._context).slice(0,180);if(/localizar/.test(skill))return {hint:`Esta es de localizar: busca en el texto una frase que responda literalmente “${t}”. No interpretes todavía.`,easy:`Aquí juegas a “buscar evidencia”. Recorre el texto hasta encontrar la acción, objeto o dato que pregunta el enunciado. Copia mentalmente esa frase y recién después busca la alternativa que dice lo mismo sin cambiarlo.`};if(/interpretar/.test(skill))return {hint:`Busca dos pistas del texto relacionadas con “${t}” y únelas. La respuesta debe inferirse de esas pistas, no de información externa.`,easy:`No necesitas adivinar qué quiso decir el autor. Pregunta: “¿qué muestran juntos estos detalles del texto?”. Explica esa idea con tus palabras y elige la alternativa que coincide sin exagerar.`};return {hint:`Identifica qué aspecto debes evaluar en “${t}”: propósito, tono, recurso o efecto. Después busca evidencia textual que lo sostenga.`,easy:`Esta pregunta te pide mirar CÓMO funciona el texto. No basta decir de qué trata. Piensa qué efecto produce la forma de escribir, el tono o el recurso señalado y busca la alternativa que mejor describe ese efecto.`};}
+ // Fallback basado en la explicacion especifica de la propia pregunta.
+ const safe=_safeExplanation(q);
+ if(safe){return {hint:`La idea matemática/conceptual que necesitas aquí es esta: ${safe.split(/[;:.]/)[0]}. Úsala como primer paso y luego vuelve a los datos del enunciado.`,easy:`Vamos con ESTA pregunta paso a paso. ${safe} Haz cada operación o relación en una línea distinta y al final compara lo obtenido con las alternativas.`};}
+ return {hint:`Identifica exactamente qué te piden en esta pregunta y anota solo los datos que sirven para responderlo.`,easy:`Tradúcela a tres cosas: qué sé, qué necesito encontrar y qué regla conecta ambas. Si no puedes escribir esas tres cosas, vuelve a leer el enunciado antes de mirar alternativas.`};
+}
+questionHint=function(q,level){const a=_assistSpecific(q);return level===1?a.hint:a.easy;};
+showPedHint=function(i,level){const el=document.getElementById(`pedhint-${i}`);if(!el||!preuSession?.questions?.[i])return;const q=preuSession.questions[i],a=_assistSpecific(q);el.innerHTML=`<strong>${level===1?'💡 Pista para ESTA pregunta':'🍎 Explícamelo fácil'}</strong><br>${esc(level===1?a.hint:a.easy)}`;};
