@@ -14,13 +14,14 @@ function buildExam(testId,{titleSuffix='Ensayo diverso',preferBank=true}={}){
  const base=window.PAES_DATA.find(t=>t.id===testId);if(!base)throw new Error('Prueba no encontrada');
  const total=base.questions.length;
  // Primero conserva preguntas del banco realmente distintas; luego completa con variantes originales.
- const bank=dedupe(shuffledLocal(base.questions),{maxTemplate:1}).map(q=>({...q,source:q.source||'Banco PAES Trainer'}));
+ const orderedBase=testId==='lectora'?[...base.questions].sort((a,b)=>Number(a.n)-Number(b.n)):shuffledLocal(base.questions);
+ const bank=dedupe(orderedBase,{maxTemplate:1}).map(q=>({...q,source:q.source||'Banco PAES Trainer'}));
  let out=preferBank?[...bank]:[];
  let attempts=0;
  while(out.length<total&&attempts<20){attempts++;const need=total-out.length;const gen=window.PAES_GENERATOR.generatedQuestions(testId,Math.max(need*2,20)).questions||[];const candidates=shuffledLocal(gen).map(q=>({...q,source:q.source||'Variante original'}));for(const q of candidates){if(out.some(x=>equivalent(x,q)))continue;out.push(q);if(out.length>=total)break;}}
  // Último recurso: permite variantes numéricas/contextuales, pero jamás el mismo enunciado exacto.
  if(out.length<total){let attempts2=0,seen=new Set(out.map(exactKey));while(out.length<total&&attempts2<40){attempts2++;const gen=window.PAES_GENERATOR.generatedQuestions(testId,total).questions||[];for(const q of gen){const k=exactKey(q);if(seen.has(k))continue;seen.add(k);out.push({...q,source:q.source||'Variante original'});if(out.length>=total)break;}}}
- out=shuffledLocal(out.slice(0,total));markScored(out,base.scoredCount);
+ out=out.slice(0,total);if(testId!=='lectora')out=shuffledLocal(out);markScored(out,base.scoredCount);
  return {...base,title:`${base.title} - ${titleSuffix}`,questions:out,generated:true,diversityChecked:true,demreFramework:'Temarios y habilidades DEMRE vigentes - Admisión 2027'};
 }
 function trainingPool(testId,skill='all',diff='all',target=40){const base=window.PAES_DATA.find(t=>t.id===testId);if(!base)return[];let bank=base.questions.filter(q=>(skill==='all'||q.skill===skill)&&(diff==='all'||q.difficulty===diff));let out=dedupe(shuffledLocal(bank),{maxTemplate:1});let tries=0;while(out.length<target&&tries<12){tries++;const gen=window.PAES_GENERATOR.generatedQuestions(testId,target*2).questions||[];for(const q of gen){if(skill!=='all'&&q.skill!==skill)continue;if(diff!=='all'&&q.difficulty!==diff)continue;if(out.some(x=>equivalent(x,q)))continue;out.push(q);if(out.length>=target)break;}}return out;}
